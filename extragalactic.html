@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Extragalactic Astronomy Practice</title>
+  <style>
+    /* Reset and base styling */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      font-family: sans-serif;
+      background: #f9f9f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-y: scroll;
+    }
+
+    h1 {
+      margin-top: 1em;
+      margin-bottom: 0.5em;
+    }
+    p {
+      margin-bottom: 1em;
+    }
+
+    /* Setup container for the range selector */
+    #range-selector {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #fff;
+      padding: 1em;
+      margin: 1em 0 0.5em 0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      max-width: 500px;
+      width: 90%;
+    }
+    #range-selector h2 {
+      margin-bottom: 0.5em;
+    }
+    .range-inputs {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 1em;
+      margin-top: 0.5em;
+    }
+    .range-inputs label {
+      display: inline-block;
+      width: 60px;
+    }
+    .range-inputs input {
+      padding: 0.3em;
+      width: 80px;
+    }
+    .range-inputs button {
+      padding: 0.4em 1em;
+      font-size: 1rem;
+      border: 1px solid #888;
+      background: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .range-inputs button:hover {
+      background: #f2f2f2;
+    }
+
+    /* Flashcard container */
+    #flashcard {
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 2em;
+      max-width: 800px;
+      width: 90%;
+      margin-top: 2em;
+      margin-bottom: 6em; /* space to accommodate fixed buttons */
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      display: none; /* hidden until a range is loaded */
+    }
+    #flashcard h2 {
+      margin-bottom: 1em;
+    }
+
+    /* Fixed button container at the bottom center */
+    .button-container {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #f9f9f9;
+      padding: 0.5em 1em;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+      display: none; /* hidden if no subset is loaded */
+    }
+
+    button {
+      margin: 0 0.5em;
+      padding: 0.5em 1em;
+      font-size: 1rem;
+      cursor: pointer;
+      border: 1px solid #888;
+      background: #fff;
+      border-radius: 4px;
+    }
+    button:hover {
+      background: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Extragalactic Astronomy Practice (Version 1.0)</h1>
+  <p>Select a range of questions below, then click <em>Load Questions</em> to practice. Use the Prev/Next buttons to cycle through them. No answers are included!</p>
+
+  <div id="range-selector">
+    <h2>Select Question Range</h2>
+    <div class="range-inputs">
+      <div>
+        <label for="startQ">Start #:</label>
+        <input type="number" id="startQ" min="1" max="92" placeholder="e.g. 1" />
+      </div>
+      <div>
+        <label for="endQ">End #:</label>
+        <input type="number" id="endQ" min="1" max="92" placeholder="e.g. 10" />
+      </div>
+      <button id="loadBtn">Load Questions</button>
+    </div>
+    <p style="margin-top: 0.5em; font-size:0.9rem; color:#666;">
+      (We have 92 total questions numbered 1 to 92.)
+    </p>
+  </div>
+
+  <div id="flashcard">
+    <h2 id="question-heading">Question</h2>
+    <p id="question-text">Loading...</p>
+  </div>
+
+  <div class="button-container" id="btnContainer">
+    <button id="prevBtn">&larr; Prev</button>
+    <button id="nextBtn">Next &rarr;</button>
+  </div>
+
+  <script>
+    /* Updated full question array from your snippet */
+    const allQuestions = [
+      "1. For the star Vega a flux density of F(Vega,500nm) ~ 5·10^-11 Wm^-2 nm^-1 has been measured, for the Sun F⊙(500nm) = 2 Wm^-2 nm^-1. Use these values to determine the apparent magnitude of the Sun at 500 nm! [basic]",
+      "2. A galaxy may consist of 10^5 solar-type stars. Compute the absolute magnitude of this galaxy, assuming that the Sun has an absolute magnitude of M⊙,V = 4.86! Moreover, compute the apparent magnitude of this galaxy assuming it is located at a distance of 10 Mpc! Would a telescope with a limiting magnitude of mV,lim = 22 be able to detect that galaxy? [advanced]",
+      "3. Astronomers observed the galaxy NGC6956 with the Hubble Space Telescope to study Cepheid variables. The galaxy shows a (Hubble) distance of 64 Mpc. Compute the expected apparent magnitude of a Cepheid in NGC6956 which pulsates with a period of 50 days! [advanced]",
+      "4. Give the (observational) definition of redshift, i.e., explain how the redshift is measured when a spectrum is available for a galaxy! [basic]",
+      "5. What does the Hubble law state? How distant (‘Hubble distance’, in Mpc) is a galaxy which shows a redshift of z = 0.7, adopting H0 = 70 km s^-1 Mpc^-1? [basic]",
+      "6. Two galaxies differ in redshift by Δz = 0.001. Assuming the two galaxies are located at the same radial distance, what is their relative (radial) velocity (scenario ‘a’)? If this relative velocity is caused by a different radial distance (Hubble flow), what is the radial distance difference between the two galaxies (scenario ‘b’)? Can we figure out if scenario ‘a’, ‘b’, or a mixture of the two is true? [advanced]",
+      "7. Sketch the spectrum (Fλ) of an A1 star! Explain the origin of the continuum part of the spectrum and of the most prominent line features! [basic]",
+      "8. Give typical main sequence lifetimes for O stars, A stars, and G stars! Compare the lifetimes with the age of the universe! [basic]",
+      "9. In the Hertzsprung-Russell diagram below, mark (at axises) roughly stellar classes, stellar luminosities (in solar luminosity), and B-V colours! Mark the location of the A1 star Vega! Mark the position of the Sun! [basic]",
+      "10. Give the wavelengths of the Fraunhofer absorption features NaD, Mgb, G-band, CaK and CaH, and of the Balmer break! [advanced]",
+      "11. Explain the observational characteristics of HII regions! Explain how HII regions are formed! Why are HII regions typically co-located with regions in which stars have been formed recently? [basic]",
+      "12. Explain why emission lines from ions with ionisation energies larger than about 10 eV, e.g. emission lines originating from OIII, are found in the spectra of HII regions! [advanced]",
+      "13. How is the cooling time defined? Estimate the cooling time of a region with T = 10^4 K and Λ(r) = 10^-24 erg cm^3 s^-1! [advanced]",
+      "14. The Jeans mass gives the minimum mass which can become gravitationally unstable. Explain the criterion of Jeans instability and give an expression for the Jeans mass! [advanced]",
+      "15. Characterise briefly (rough estimate for temperatures and densities, what is the dominating cooling process) the following phases of the ISM: (i) Molecular Clouds, (ii) Cold Neutral Medium, (iii) Warm Ionised Medium, and (iv) Hot Ionised Medium! [advanced]",
+      "16. The Cold Neutral Medium in distant galaxies is often observed in the radio wavelength. What kind of emission is observed? [basic]",
+      "17. Explain briefly what processes lead to Type Ia supernova? Why are Ia supernovae used as standard candles to measure the distance of galaxies at high redshifts, up to redshifts of about z ~ 1? [basic]",
+      "18. Why can supernovae remnants be observed with radio telescopes? What leads to the synchrotron emission? [advanced]",
+      "19. How is the metallicity [X/H] defined? Name a few possible origins of “metals”, i.e. elements beyond Helium, detected in the interstellar medium! [basic]",
+      "20. In the diagram below, indicate the temperature range in which He/H line cooling dominates and in which fine-structure line cooling dominates! What is the reason for the strong difference in the cooling function in the two regimes? [advanced]",
+      "21. Interstellar dust typically shows a temperature below the effective surface temperature of stars. Explain why the interstellar dust in a galaxy “transfers” radiation energy “from blue to red”! [basic]",
+      "22. Sketch a typical extinction curve and explain why extinction causes a reddening! [basic]",
+      "23. Name the criteria to assign a spiral galaxy to a specific Hubble type! Name at least two properties of spiral galaxies which vary systematically with Hubble type of spiral galaxies! [basic]",
+      "24. Sketch the surface brightness (in magnitudes) versus radius for a disk galaxy! Include a ‘bulge’ and a ‘break’ in your sketch! Why do disk galaxies have a break in their surface brightness profile? [basic]",
+      "25. What does Freeman’s law state? Sketch the magnitude vs. radius for two disks which both follow Freeman’s law but have significantly different total luminosities! [advanced]",
+      "26. What is the thin disk? How does the vertical scale height depend on the spectral class of the stars? [advanced]",
+      "27. How is the star formation rate defined? Estimate from the stellar mass in the Milky Way (∼ 5.6·10^10 M⊙) and the age of the Universe (∼ 14 Gyr) the average star formation rate (M⊙/yr) in the Milky Way! [basic]",
+      "28. Name three tracers to estimate the star formation rate in distant galaxies! Explain why they trace the star formation rate! [basic]",
+      "29. Sketch the column star formation rate SFR versus the column gas density ΣH for spiral galaxies! What does the Kennicutt-Schmidt law state? What relation between SFR and ΣH would you expect if the star formation timescale were universal? [advanced]",
+      "30. Identify main features in the spectrum below and explain their origin! If this is a spectrum of a disk galaxy, would it be rather an early type or a late type galaxy? Argue! [basic]",
+      "31. How is the spectral energy distribution (SED) defined? Sketch the SED of a spiral galaxy as function of wavelength! Indicate the contributions from stars, dust, and gas including HII regions! [basic]",
+      "32. How colour is defined in magnitudes? What B-V colour would you expect for an early type galaxy? [basic]",
+      "33. What do we call the rotation curve of a disk galaxy? How can we measure it for galaxies in the universe? Describe in an appropriately detailed way how you would measure it! Give the value for the rotation velocity of the sun around the galactic centre! [basic]",
+      "34. Explain why is the flatness of the rotation curves of disk galaxies is considered as evidence for the existence of dark matter! [basic]",
+      "35. The Sun orbits with 200 km s^-1 and a distance of 8 kpc the galactic centre. Determine the mass enclosed by the Sun’s orbit! [basic]",
+      "36. Explain how the Tully-Fisher relation is derived! How can we use it to measure the distance of spiral galaxies? [advanced]",
+      "37. Explain who the mass-to-light ratio of a galaxy depends in average on the morphological type of the galaxy, in particular in B-band? [basic]",
+      "38. How does the velocity dispersion in a disk varies with the spectral type of stars? Explain why there is a dependence! [advanced]",
+      "39. What is considered as the winding problem of spiral arms in disk galaxies? [basic]",
+      "40. How does epicyclic motions help to reduce the winding problem? [advanced]",
+      "41. When does disks become instable according to the Toomre criterion? Write down the criterion! [advanced]",
+      "42. Explain the Hubble criterion of different (Hubble) types of elliptical galaxies! Sketch an E0 and an E5 galaxy using isophotes! [basic]",
+      "43. Sketch the spectrum of an elliptical galaxy and discuss characteristic features! [basic]",
+      "44. Sketch the de Vaucouleurs surface brightness profile of an elliptic galaxy and qualitatively compare this profile to the profile of an exponential disk! Explain (give the expression) how the Sersic profile provides a generalisation! [basic]",
+      "45. What is a strong encounter of two compact masses as two stars? Give the definition of a strong encounter radius! Compute the strong encounter radius of two solar type stars moving with the circular velocity of the sun! How often do you expect stars like the Sun in the Milky Way to suffer a strong encounter? [advanced]",
+      "46. How are kinetic energy, ∝ Mv^2/2, and potential energy, ∝ GM^2/R, related for a virialized mass distribution (virial theorem)? How can the virial theorem be used to estimate the mass of a galaxy cluster? [basic]",
+      "47. Can a bulge in disk galaxies be considered as a small elliptical galaxy? Argue! How does scaling relations for bulges and elliptical galaxies compare? [unlabeled difficulty]",
+      "48. How is the escape velocity defined? How can the Schwarzschild radius be motivated using the escape velocity? How large is the Schwarzschild radius of a black hole with the mass of the Sun? [basic]",
+      "49. In the spectrum below, indicate three features which indicate the presence of an Active Galactic Nucleus and explain the origin of these features! [unlabeled difficulty]",
+      "50. How do we know that there is a black hole in the centre of the Milky Way? [advanced]",
+      "51. What method is used to measure the mass of black holes in the centre of galaxies in the universe? Explain why these observations are challenging! [basic]",
+      "52. What observational fact convinces scientists that the massive black holes grow together with the galaxy (coevolution)? Explain how the conclusion of coevolution is reached! [advanced]",
+      "53. Sketch the components in the centre of a galaxy which commonly form an Active Galactic Nucleus! [basic]",
+      "54. Name four observational features which are considered to be indicative that a galaxy hosts an Active Galactic Nucleus! [basic]",
+      "55. Sketch the SED of an AGN! How does it differ from the SED of normal (non-active) galaxies? [basic]",
+      "56. Sketch and explain the structural elements of radio galaxies: (i) core, (ii) jets, (iii) hot spots, and (iv) lobes! [advanced]",
+      "57. What characterises a Seyfert Type 1 galaxy? How does the characteristic properties of a Seyfert Type 1 galaxy differ from those of a Seyfert Type 2 galaxy? [basic]",
+      "58. Explain why disk galaxies hosting an AGN often do not show a broad line feature when viewed edge-on! [basic]",
+      "59. What are quasars? Why does quasars often show a strong variability with time? What part of the electromagnetic spectrum (radio, far infrared, near infrared, optical, ultraviolett etc.) would you use to search for variability? Argue! [advanced]",
+      "60. Explain the physical processes determining the temperature profile of an accretion disk (in the thin, optically thick disk approximation)! [advanced]",
+      "61. What limits the accretion rate onto a black hole according to the Eddington limit? [basic]",
+      "62. Relate the components named ‘Accretion disc’, ‘Dusty torus’, ‘Hot corona’, and ‘Non thermal radio’ in the SED below to the structural components of an AGN! From which direction would an AGN with such a SED be seen? Which of these spectral component emits most of the energy? [basic]",
+      "63. Broad line features can vary on a time scale of days. Estimate the maximum diameter of the emitting volume! [basic]",
+      "64. Many galaxies show jets and lobes in radio but no indication for an AGN in optical. How is this explained? [advanced]",
+      "65. How does the comoving distance of two galaxies with a peculiar velocity v=0 change as the universe expands? Two galaxies may be 1 Gpc apart today. What was their physical distance at redshift z=4? [basic]",
+      "66. How is the time dependent Hubble constant related to scale factor a(t)? Explain why the inverse of the Hubble constant may serve as a rough estimate for age of the universe! [basic]",
+      "67. How is the critical density defined? Looking at the Friedmann’s equation, what is the implication for the constant K? [advanced]",
+      "68. Based on the equation of state, how does radiation, matter, and dark energy differ? [basic]",
+      "69. Assume the density parameter in the universe is Ωm = 0.27. What does this imply for the matter density in the universe? Does the matter density show for all times a fixed ratio w.r.t. the critical density? [advanced]",
+      "70. The radiation density parameter may amount to Ωr = 10^-4. Estimate the scale factor up to which radiation has dominated the expansion of the universe! [advanced]",
+      "71. Explain how the luminosity distance differs from the comoving distance? Can you say whether one is always greater than the other? [basic]",
+      "72. The canonical Big Bang scenario is often called ‘Hot Big Bang’. Explain why the cosmic expansion implies that the temperature of the universe was initially high! [basic]",
+      "73. What is the Cosmic Microwave Background? Which temperature does it show today? [basic]",
+      "74. What effect to we call freeze out? Please give an illustrative example! [advanced]",
+      "75. What causes the dipole anisotropy found in the Cosmic Microwave Background temperature distribution? [basic]",
+      "76. Explain the criterion G. O. Abell used to identify galaxy clusters? [basic]",
+      "77. Indicate the red sequence and blue cloud in the lower left panels of the two plots below! Which galaxies according to the Hubble type (note, colours in the plots indicate the Hubble type!) predominantly populate the blue cloud, and which ones the red sequence? Explain why! [basic]",
+      "78. What are cD galaxies? Explain why these are the most luminous galaxies in the Universe when the contribution from AGN is explicitly excluded! [advanced]",
+      "79. How can we measure the mass of a galaxy cluster? [basic]",
+      "80. Galaxies which move in a galaxy cluster are slowed down by dynamical friction? Sketch and explain how dynamical friction causes the deceleration! [advanced]",
+      "81. X-ray telescopes are often used to search for galaxy clusters. What kind of emission do X-ray telescopes observe and why is that an efficient method to search for galaxy clusters? [basic]",
+      "82. Why do we expect the intra-cluster medium to have the shortest cooling time at the centre of the clusters? What is believed to offset the cooling of this gas? [advanced]",
+      "83. Assume that we survey the sky with a telescope with a limiting (apparent!) magnitude. Moreover, assume that we are able to measure the redshift for every galaxy. Sketch the expected distribution of absolute magnitude vs. redshift! [advanced]",
+      "84. Explain three possibilities to determine the distance of a galaxy independent from redshift! [basic]",
+      "85. Sketch a Schechter distribution of galaxies (including proper axis labelling)! [advanced]",
+      "86. How does the relative fraction of early and late type of galaxies depend on the environment (in a galaxy cluster or outside)? [advanced]",
+      "87. What do we call the cosmic web? Do you expect to see the cosmic web in a wide angle very deep observation? Argue! [advanced]",
+      "88. The image of the Bullet cluster shows optical, X-rays (red) and weak lensing (blue) data. The weak lensing is believed to measure the distribution of mass. It is known that in galaxy clusters the intra-cluster medium contains significantly more mass than galaxies. The image is interpreted as an argument against ‘modified Newtonian gravitation’. Explain why. [advanced]",
+      "89. What is the intergalactic medium (IGM)? How is the IGM heated, how does it cool? [basic]",
+      "90. What do we call the Lyman-alpha forest? Given the distribution of cosmic matter, explain how the Lyman-alpha forest is formed. [advanced]",
+      "91. In the spectrum to a distant quasar we may identify a damped Lyα system. Explain how this absorption feature arises! [advanced]",
+      "92. How can we aim for identifying distant (z ≳ 3) galaxies in photometric (using filters) observations? [advanced]"
+    ];
+
+    // We'll store the subset of questions here
+    let subsetQuestions = [];
+    let currentIndex = 0;
+
+    const flashcard = document.getElementById('flashcard');
+    const qHeading = document.getElementById('question-heading');
+    const qText = document.getElementById('question-text');
+    const btnContainer = document.getElementById('btnContainer');
+    const loadBtn = document.getElementById('loadBtn');
+
+    // Shuffle function
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function showQuestion(index) {
+      qHeading.textContent = `Question #${index+1}`;
+      qText.textContent = subsetQuestions[index];
+    }
+
+    function nextQuestion() {
+      currentIndex++;
+      if (currentIndex >= subsetQuestions.length) {
+        currentIndex = 0;
+      }
+      showQuestion(currentIndex);
+    }
+
+    function prevQuestion() {
+      currentIndex--;
+      if (currentIndex < 0) {
+        currentIndex = subsetQuestions.length - 1;
+      }
+      showQuestion(currentIndex);
+    }
+
+    function loadSubset() {
+      const startVal = parseInt(document.getElementById('startQ').value, 10);
+      const endVal = parseInt(document.getElementById('endQ').value, 10);
+
+      // Validate inputs
+      if (isNaN(startVal) || isNaN(endVal)) {
+        alert("Please enter valid start and end question numbers!");
+        return;
+      }
+      if (startVal < 1 || endVal > allQuestions.length || startVal > endVal) {
+        alert(`Range must be between 1 and ${allQuestions.length}, and start <= end.`);
+        return;
+      }
+
+      // Slice the range (note: question # is 1-based, but array is 0-based)
+      subsetQuestions = allQuestions.slice(startVal - 1, endVal);
+      // Shuffle
+      shuffle(subsetQuestions);
+
+      currentIndex = 0;
+      if (subsetQuestions.length > 0) {
+        flashcard.style.display = "block";
+        btnContainer.style.display = "block";
+        showQuestion(currentIndex);
+      } else {
+        flashcard.style.display = "none";
+        btnContainer.style.display = "none";
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initially hide the question area
+      flashcard.style.display = "none";
+      btnContainer.style.display = "none";
+
+      // Hook up the load button
+      loadBtn.addEventListener('click', loadSubset);
+
+      // Hook up Prev/Next
+      document.getElementById('prevBtn').addEventListener('click', prevQuestion);
+      document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+    });
+  </script>
+</body>
+</html>
