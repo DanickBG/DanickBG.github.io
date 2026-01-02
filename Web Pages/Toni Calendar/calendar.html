@@ -411,7 +411,10 @@
     const $ = (id) => document.getElementById(id);
     const STORE_KEY = "cw-calendar-v1";
     const DEFAULT_DATA_URL = "./data/calendar-data.json";
-    const DEFAULT_IMPORT_FLAG = "cw-default-imported-v1";
+
+    // 🔁 CHANGE THIS VALUE WHEN YOU UPDATE calendar-data.json
+    const DEFAULT_DATA_VERSION = "2026-01-05";
+    const DEFAULT_IMPORT_FLAG = `cw-default-imported-${DEFAULT_DATA_VERSION}`;
 
     /**
      * Merge strategy:
