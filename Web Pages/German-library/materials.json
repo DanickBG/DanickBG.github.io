@@ -1,0 +1,24 @@
+[
+  {
+    "title": "Netzwerk A1 Kursbuch (PDF)",
+    "level": "A1",
+    "type": "textbooks",
+    "path": "files/A1/textbooks/Netzwerk_A1_Kursbuch.pdf",
+    "tags": ["netzwerk", "kursbuch", "grammar"],
+    "sizeLabel": "120 MB"
+  },
+  {
+    "title": "Netzwerk A1 Audio Lektion 1 (MP3)",
+    "level": "A1",
+    "type": "audios",
+    "path": "files/A1/audios/Netzwerk_A1_L1.mp3",
+    "tags": ["audio", "lektion 1"]
+  },
+  {
+    "title": "B2 Speaking Cards (PDF)",
+    "level": "B2",
+    "type": "DIY materials",
+    "path": "files/B2/DIY materials/B2_Speaking_Cards.pdf",
+    "tags": ["speaking", "cards"]
+  }
+]

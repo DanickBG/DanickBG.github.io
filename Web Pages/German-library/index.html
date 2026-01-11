@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>German Course Materials Library</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: rgba(255,255,255,0.06);
+      --card2: rgba(255,255,255,0.09);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.68);
+      --border: rgba(255,255,255,0.12);
+      --accent: #7dd3fc;
+      --accent2: #a78bfa;
+      --danger: #fb7185;
+      --ok: #34d399;
+      --shadow: 0 20px 60px rgba(0,0,0,0.35);
+      --radius: 18px;
+      --radius2: 14px;
+      --pad: 18px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 20% -10%, rgba(125,211,252,0.18), transparent 60%),
+        radial-gradient(900px 500px at 80% 0%, rgba(167,139,250,0.16), transparent 60%),
+        radial-gradient(700px 450px at 50% 100%, rgba(52,211,153,0.10), transparent 55%),
+        var(--bg);
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 28px 18px 12px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .title-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: 0.2px;
+    }
+
+    .subtitle {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px 18px 50px;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      gap: 12px;
+      align-items: end;
+    }
+
+    @media (max-width: 900px) {
+      .controls { grid-template-columns: 1fr; }
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    input[type="search"], select {
+      width: 100%;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.25);
+      color: var(--text);
+      outline: none;
+    }
+
+    input[type="search"]::placeholder { color: rgba(255,255,255,0.45); }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    button {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: transform 0.05s ease, background 0.2s ease;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      user-select: none;
+      white-space: nowrap;
+    }
+    button:hover { background: rgba(255,255,255,0.12); }
+    button:active { transform: translateY(1px); }
+    button.primary {
+      background: linear-gradient(90deg, rgba(125,211,252,0.35), rgba(167,139,250,0.30));
+      border-color: rgba(255,255,255,0.18);
+    }
+    button.primary:hover { background: linear-gradient(90deg, rgba(125,211,252,0.42), rgba(167,139,250,0.38)); }
+    button.danger {
+      border-color: rgba(251,113,133,0.35);
+      background: rgba(251,113,133,0.10);
+    }
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .status {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+      padding: 8px 0 0;
+    }
+
+    .grid {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    @media (max-width: 1000px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+
+    .card {
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.18);
+      border-radius: var(--radius2);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .pill {
+      font-size: 12px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.80);
+    }
+    .pill.level { border-color: rgba(125,211,252,0.35); }
+    .pill.type  { border-color: rgba(167,139,250,0.35); }
+    .pill.size  { border-color: rgba(52,211,153,0.35); }
+
+    .card h3 {
+      margin: 0;
+      font-size: 15px;
+      letter-spacing: 0.2px;
+      line-height: 1.35;
+    }
+
+    .path {
+      font-size: 12px;
+      color: rgba(255,255,255,0.55);
+      word-break: break-all;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 6px;
+    }
+
+    a.filelink {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 13px;
+    }
+    a.filelink:hover { text-decoration: underline; }
+
+    .footer-note {
+      margin-top: 14px;
+      color: rgba(255,255,255,0.55);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .error {
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(251,113,133,0.35);
+      background: rgba(251,113,133,0.10);
+      color: rgba(255,255,255,0.88);
+      display: none;
+      white-space: pre-wrap;
+    }
+
+    .progress {
+      margin-left: 10px;
+      color: rgba(255,255,255,0.75);
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="title-row">
+      <h1>German Course Materials Library</h1>
+      <div class="pill">Local file library</div>
+    </div>
+    <p class="subtitle">
+      Filter by level/type, search instantly, download single files, or export a ZIP of the current results.
+    </p>
+  </header>
+
+  <main>
+    <section class="panel">
+      <div class="controls">
+        <div>
+          <label for="search">Search (title, tags, filename)</label>
+          <input id="search" type="search" placeholder="e.g. articles, Konjunktiv II, Netzwerk, audio..." autocomplete="off" />
+        </div>
+
+        <div>
+          <label for="level">Level</label>
+          <select id="level">
+            <option value="ALL">All levels</option>
+            <option value="A1">A1</option>
+            <option value="A2">A2</option>
+            <option value="B1">B1</option>
+            <option value="B2">B2</option>
+            <option value="C1">C1</option>
+            <option value="C2">C2</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="type">Type</label>
+          <select id="type">
+            <option value="ALL">All types</option>
+            <option value="textbooks">textbooks</option>
+            <option value="workbooks">workbooks</option>
+            <option value="DIY materials">DIY materials</option>
+            <option value="teaching instructions">teaching instructions</option>
+            <option value="audios">audios</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <div class="btn-row">
+          <button id="reloadBtn" title="Reload materials.json">↻ Reload</button>
+          <button id="clearBtn" class="danger" title="Clear filters & search">✕ Clear</button>
+        </div>
+
+        <div class="btn-row">
+          <button id="downloadZipBtn" class="primary" disabled>⬇ Download all (ZIP)</button>
+          <span id="zipProgress" class="progress"></span>
+        </div>
+      </div>
+
+      <div class="status" id="status">Loading materials…</div>
+      <div class="error" id="errorBox"></div>
+
+      <div class="grid" id="grid"></div>
+
+      <div class="footer-note">
+        Tip: If this page shows an error like “Failed to fetch”, open it via a local server (see instructions below).
+      </div>
+    </section>
+  </main>
+
+  <!-- ZIP download support -->
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+
+  <script>
+    const MATERIALS_JSON = 'materials.json';
+
+    const LEVEL_ORDER = ['A1','A2','B1','B2','C1','C2'];
+
+    const els = {
+      search: document.getElementById('search'),
+      level: document.getElementById('level'),
+      type: document.getElementById('type'),
+      grid: document.getElementById('grid'),
+      status: document.getElementById('status'),
+      errorBox: document.getElementById('errorBox'),
+      reloadBtn: document.getElementById('reloadBtn'),
+      clearBtn: document.getElementById('clearBtn'),
+      downloadZipBtn: document.getElementById('downloadZipBtn'),
+      zipProgress: document.getElementById('zipProgress')
+    };
+
+    let allItems = [];
+    let filteredItems = [];
+
+    function showError(msg) {
+      els.errorBox.style.display = 'block';
+      els.errorBox.textContent = msg;
+    }
+    function clearError() {
+      els.errorBox.style.display = 'none';
+      els.errorBox.textContent = '';
+    }
+
+    function normalizeType(t) {
+      // helps if you sometimes use different casing
+      return String(t || '').trim();
+    }
+
+    function filenameFromPath(path) {
+      const p = String(path || '');
+      const parts = p.split('/');
+      return parts[parts.length - 1] || p;
+    }
+
+    function matchesSearch(item, q) {
+      if (!q) return true;
+      const hay = [
+        item.title || '',
+        item.level || '',
+        item.type || '',
+        filenameFromPath(item.path),
+        ...(Array.isArray(item.tags) ? item.tags : [])
+      ].join(' ').toLowerCase();
+      return hay.includes(q.toLowerCase());
+    }
+
+    function applyFilters() {
+      const q = els.search.value.trim();
+      const level = els.level.value;
+      const type = els.type.value;
+
+      filteredItems = allItems.filter(it => {
+        const okLevel = (level === 'ALL') || (String(it.level).toUpperCase() === level);
+        const okType  = (type === 'ALL')  || (normalizeType(it.type) === type);
+        const okQuery = matchesSearch(it, q);
+        return okLevel && okType && okQuery;
+      });
+
+      // Sort by level order, then type, then title
+      filteredItems.sort((a,b) => {
+        const la = LEVEL_ORDER.indexOf(String(a.level).toUpperCase());
+        const lb = LEVEL_ORDER.indexOf(String(b.level).toUpperCase());
+        if (la !== lb) return la - lb;
+        const ta = normalizeType(a.type);
+        const tb = normalizeType(b.type);
+        if (ta !== tb) return ta.localeCompare(tb);
+        return String(a.title || '').localeCompare(String(b.title || ''));
+      });
+
+      render();
+    }
+
+    function render() {
+      els.grid.innerHTML = '';
+
+      els.downloadZipBtn.disabled = filteredItems.length === 0;
+
+      const total = allItems.length;
+      const shown = filteredItems.length;
+
+      const level = els.level.value;
+      const type = els.type.value;
+      const q = els.search.value.trim();
+
+      const bits = [];
+      bits.push(`${shown} / ${total} items`);
+      if (level !== 'ALL') bits.push(`level: ${level}`);
+      if (type !== 'ALL') bits.push(`type: ${type}`);
+      if (q) bits.push(`search: “${q}”`);
+      els.status.textContent = bits.join(' • ');
+
+      for (const item of filteredItems) {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+
+        const pillLevel = document.createElement('span');
+        pillLevel.className = 'pill level';
+        pillLevel.textContent = String(item.level || '').toUpperCase();
+
+        const pillType = document.createElement('span');
+        pillType.className = 'pill type';
+        pillType.textContent = normalizeType(item.type);
+
+        meta.appendChild(pillLevel);
+        meta.appendChild(pillType);
+
+        if (item.sizeLabel) {
+          const pillSize = document.createElement('span');
+          pillSize.className = 'pill size';
+          pillSize.textContent = item.sizeLabel;
+          meta.appendChild(pillSize);
+        }
+
+        const h3 = document.createElement('h3');
+        h3.textContent = item.title || filenameFromPath(item.path);
+
+        const p = document.createElement('div');
+        p.className = 'path';
+        p.textContent = item.path;
+
+        const actions = document.createElement('div');
+        actions.className = 'card-actions';
+
+        // Single-file download
+        const a = document.createElement('a');
+        a.className = 'filelink';
+        a.href = item.path;
+        a.download = filenameFromPath(item.path);
+        a.textContent = 'Download';
+        actions.appendChild(a);
+
+        // Optional: quick open
+        const open = document.createElement('a');
+        open.className = 'filelink';
+        open.href = item.path;
+        open.target = '_blank';
+        open.rel = 'noopener';
+        open.textContent = 'Open';
+        actions.appendChild(open);
+
+        card.appendChild(meta);
+        card.appendChild(h3);
+        card.appendChild(p);
+        card.appendChild(actions);
+
+        els.grid.appendChild(card);
+      }
+    }
+
+    async function loadMaterials() {
+      clearError();
+      els.status.textContent = 'Loading materials…';
+      els.zipProgress.textContent = '';
+      els.grid.innerHTML = '';
+
+      try {
+        const res = await fetch(MATERIALS_JSON, { cache: 'no-store' });
+        if (!res.ok) {
+          throw new Error(`Could not load ${MATERIALS_JSON} (HTTP ${res.status}).`);
+        }
+        const data = await res.json();
+
+        if (!Array.isArray(data)) {
+          throw new Error(`materials.json must be an array of objects.`);
+        }
+
+        // Basic normalization
+        allItems = data.map((x) => ({
+          title: x.title ?? '',
+          level: String(x.level ?? '').toUpperCase(),
+          type: normalizeType(x.type ?? ''),
+          path: String(x.path ?? ''),
+          tags: Array.isArray(x.tags) ? x.tags.map(String) : [],
+          sizeLabel: x.sizeLabel ?? ''
+        })).filter(x => x.level && x.type && x.path);
+
+        applyFilters();
+      } catch (err) {
+        showError(
+          `Error loading materials.\n\n` +
+          `${err?.message || err}\n\n` +
+          `Common causes:\n` +
+          `- You opened index.html directly (file://) and the browser blocked fetch.\n` +
+          `- materials.json is missing or not valid JSON.\n\n` +
+          `Fix: run a local server (instructions below).`
+        );
+        els.status.textContent = 'Failed to load materials.';
+        allItems = [];
+        filteredItems = [];
+        render();
+      }
+    }
+
+    async function downloadZipOf(items) {
+      if (!items.length) return;
+
+      els.downloadZipBtn.disabled = true;
+      els.zipProgress.textContent = 'Preparing ZIP…';
+
+      try {
+        const zip = new JSZip();
+
+        let ok = 0;
+        let fail = 0;
+
+        for (let i = 0; i < items.length; i++) {
+          const it = items[i];
+          const safeType = normalizeType(it.type).replace(/[\\:*?"<>|]/g, '_');
+          const folder = `${String(it.level).toUpperCase()}/${safeType}`;
+
+          els.zipProgress.textContent = `Fetching ${i + 1}/${items.length}…`;
+
+          try {
+            const r = await fetch(it.path);
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            const blob = await r.blob();
+            const name = filenameFromPath(it.path) || `file_${i + 1}`;
+            zip.folder(folder).file(name, blob);
+            ok++;
+          } catch (e) {
+            // Keep going even if a file fails
+            fail++;
+            console.warn('Failed to fetch:', it.path, e);
+          }
+        }
+
+        els.zipProgress.textContent = `Building ZIP (${ok} ok, ${fail} failed)…`;
+        const out = await zip.generateAsync({ type: 'blob' }, (meta) => {
+          els.zipProgress.textContent = `Zipping… ${Math.floor(meta.percent)}%`;
+        });
+
+        const now = new Date();
+        const stamp = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+        saveAs(out, `german-materials_${stamp}.zip`);
+
+        els.zipProgress.textContent = `Done. (${ok} included, ${fail} failed)`;
+      } catch (err) {
+        showError(`ZIP download failed.\n\n${err?.message || err}`);
+        els.zipProgress.textContent = '';
+      } finally {
+        els.downloadZipBtn.disabled = filteredItems.length === 0;
+      }
+    }
+
+    // Events
+    els.search.addEventListener('input', applyFilters);
+    els.level.addEventListener('change', applyFilters);
+    els.type.addEventListener('change', applyFilters);
+
+    els.reloadBtn.addEventListener('click', loadMaterials);
+
+    els.clearBtn.addEventListener('click', () => {
+      els.search.value = '';
+      els.level.value = 'ALL';
+      els.type.value = 'ALL';
+      applyFilters();
+    });
+
+    els.downloadZipBtn.addEventListener('click', () => {
+      downloadZipOf(filteredItems);
+    });
+
+    // Start
+    loadMaterials();
+  </script>
+
+  <!--
+    Local server instructions (pick one):
+
+    1) Python (recommended):
+       - Open terminal in this folder
+       - python3 -m http.server 8000
+       - Visit: http://localhost:8000
+
+    2) Node (if you have it):
+       - npx serve .
+       - Open the shown URL
+
+    Opening index.html directly (file://) often blocks fetch() of materials.json.
+  -->
+</body>
+</html>
