@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lev ⇄ Euro</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #111;
+      --border: #d0d0d0;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .wrap {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    h1 {
+      font-size: 34px;
+      margin: 8px 0 18px;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      font-size: 22px;
+      margin: 18px 0 8px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      font-size: 44px;      /* BIG */
+      padding: 16px 14px;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      box-sizing: border-box;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #000;
+    }
+
+    .note {
+      margin-top: 18px;
+      font-size: 18px;
+      text-align: center;
+      color: #444;
+    }
+
+    /* Extra spacing for thumbs on mobile */
+    .spacer {
+      height: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Lev ⇄ Euro</h1>
+
+    <label for="bgn">Bulgarian Lev (BGN)</label>
+    <input
+      id="bgn"
+      type="number"
+      inputmode="numeric"
+      pattern="[0-9]*"
+      step="1"
+      placeholder="0"
+      autocomplete="off"
+    />
+
+    <div class="spacer"></div>
+
+    <label for="eur">Euro (EUR)</label>
+    <input
+      id="eur"
+      type="number"
+      inputmode="numeric"
+      pattern="[0-9]*"
+      step="1"
+      placeholder="0"
+      autocomplete="off"
+    />
+
+    <div class="note">Rate: 1 EUR = 1.95583 BGN</div>
+  </div>
+
+  <script>
+    // Fixed conversion rate: 1 EUR = 1.95583 BGN
+    const RATE = 1.95583;
+
+    const bgn = document.getElementById("bgn");
+    const eur = document.getElementById("eur");
+
+    // Prevent infinite loop when updating the other field
+    let updating = null;
+
+    // Keep it simple: allow empty, otherwise use numbers.
+    function toIntOrNull(value) {
+      const trimmed = String(value).trim();
+      if (trimmed === "") return null;
+      // Elder-friendly: treat any decimal input as number, but you asked for integer fields.
+      // We'll still parse and then round.
+      const n = Number(trimmed);
+      return Number.isFinite(n) ? n : null;
+    }
+
+    function setValue(el, num) {
+      // Integers only:
+      el.value = String(Math.round(num));
+    }
+
+    bgn.addEventListener("input", () => {
+      if (updating === "bgn") return;
+      const v = toIntOrNull(bgn.value);
+      if (v === null) { eur.value = ""; return; }
+
+      updating = "eur";
+      // BGN -> EUR
+      setValue(eur, v / RATE);
+      updating = null;
+    });
+
+    eur.addEventListener("input", () => {
+      if (updating === "eur") return;
+      const v = toIntOrNull(eur.value);
+      if (v === null) { bgn.value = ""; return; }
+
+      updating = "bgn";
+      // EUR -> BGN
+      setValue(bgn, v * RATE);
+      updating = null;
+    });
+
+    // Optional: start with cursor in the first field on mobile
+    // (Some mobile browsers may ignore auto-focus; that’s normal.)
+    window.addEventListener("load", () => bgn.focus());
+  </script>
+</body>
+</html>
