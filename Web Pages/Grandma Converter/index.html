@@ -1,21 +1,16 @@
 <!doctype html>
-<html lang="en">
+<html lang="bg">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lev ⇄ Euro</title>
-  <style>
-    :root {
-      --bg: #ffffff;
-      --text: #111;
-      --border: #d0d0d0;
-    }
+  <title>Лев ⇄ Евро</title>
 
+  <style>
     body {
       margin: 0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      background: #ffffff;
+      color: #111;
     }
 
     .wrap {
@@ -39,9 +34,9 @@
 
     input {
       width: 100%;
-      font-size: 44px;      /* BIG */
+      font-size: 44px;
       padding: 16px 14px;
-      border: 2px solid var(--border);
+      border: 2px solid #d0d0d0;
       border-radius: 14px;
       box-sizing: border-box;
       outline: none;
@@ -57,93 +52,79 @@
       text-align: center;
       color: #444;
     }
-
-    /* Extra spacing for thumbs on mobile */
-    .spacer {
-      height: 10px;
-    }
   </style>
 </head>
+
 <body>
   <div class="wrap">
-    <h1>Lev ⇄ Euro</h1>
+    <h1>Лев ⇄ Евро</h1>
 
-    <label for="bgn">Bulgarian Lev (BGN)</label>
+    <label for="bgn">Български лева (BGN)</label>
     <input
       id="bgn"
       type="number"
-      inputmode="numeric"
-      pattern="[0-9]*"
-      step="1"
-      placeholder="0"
-      autocomplete="off"
+      inputmode="decimal"
+      step="0.01"
+      placeholder="0.00"
     />
 
-    <div class="spacer"></div>
-
-    <label for="eur">Euro (EUR)</label>
+    <label for="eur">Евро (EUR)</label>
     <input
       id="eur"
       type="number"
-      inputmode="numeric"
-      pattern="[0-9]*"
-      step="1"
-      placeholder="0"
-      autocomplete="off"
+      inputmode="decimal"
+      step="0.01"
+      placeholder="0.00"
     />
 
-    <div class="note">Rate: 1 EUR = 1.95583 BGN</div>
+    <div class="note">Курс: 1 Евро = 1.95583 Лева</div>
   </div>
 
   <script>
-    // Fixed conversion rate: 1 EUR = 1.95583 BGN
     const RATE = 1.95583;
 
     const bgn = document.getElementById("bgn");
     const eur = document.getElementById("eur");
 
-    // Prevent infinite loop when updating the other field
     let updating = null;
 
-    // Keep it simple: allow empty, otherwise use numbers.
-    function toIntOrNull(value) {
-      const trimmed = String(value).trim();
-      if (trimmed === "") return null;
-      // Elder-friendly: treat any decimal input as number, but you asked for integer fields.
-      // We'll still parse and then round.
-      const n = Number(trimmed);
+    function parseNumber(value) {
+      if (value === "") return null;
+      const n = Number(value);
       return Number.isFinite(n) ? n : null;
     }
 
-    function setValue(el, num) {
-      // Integers only:
-      el.value = String(Math.round(num));
+    function round2(n) {
+      return Math.round(n * 100) / 100;
     }
 
     bgn.addEventListener("input", () => {
       if (updating === "bgn") return;
-      const v = toIntOrNull(bgn.value);
-      if (v === null) { eur.value = ""; return; }
+      const v = parseNumber(bgn.value);
+      if (v === null) {
+        eur.value = "";
+        return;
+      }
 
       updating = "eur";
-      // BGN -> EUR
-      setValue(eur, v / RATE);
+      eur.value = round2(v / RATE);
       updating = null;
     });
 
     eur.addEventListener("input", () => {
       if (updating === "eur") return;
-      const v = toIntOrNull(eur.value);
-      if (v === null) { bgn.value = ""; return; }
+      const v = parseNumber(eur.value);
+      if (v === null) {
+        bgn.value = "";
+        return;
+      }
 
       updating = "bgn";
-      // EUR -> BGN
-      setValue(bgn, v * RATE);
+      bgn.value = round2(v * RATE);
       updating = null;
     });
 
-    // Optional: start with cursor in the first field on mobile
-    // (Some mobile browsers may ignore auto-focus; that’s normal.)
+    // Focus first field on load (mobile-friendly)
     window.addEventListener("load", () => bgn.focus());
   </script>
 </body>
