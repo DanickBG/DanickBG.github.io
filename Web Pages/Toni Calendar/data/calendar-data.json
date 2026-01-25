@@ -2,17 +2,20 @@
   "2025-01-01": {
     "cal": 100,
     "wt": null,
-    "note": "Fitball"
+    "note": "Fitball",
+    "fit": true
   },
   "2025-01-02": {
     "cal": 400,
     "wt": null,
-    "note": "Fitball 100\nHIIT 300\n"
+    "note": "Fitball 100\nHIIT 300\n",
+    "fit": true
   },
   "2025-01-03": {
     "cal": 300,
     "wt": null,
-    "note": "HIIT\n"
+    "note": "HIIT\n",
+    "fit": true
   },
   "2025-01-04": {
     "cal": null,
@@ -102,17 +105,20 @@
   "2025-02-05": {
     "cal": 400,
     "wt": null,
-    "note": "10:00-10:50 Termin, Caro Nast, Fitness 400kcal"
+    "note": "10:00-10:50 Termin, Caro Nast, Fitness 400kcal",
+    "fit": true
   },
   "2025-02-06": {
     "cal": 400,
     "wt": null,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-02-07": {
     "cal": 450,
     "wt": null,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-02-08": {
     "cal": null,
@@ -122,7 +128,8 @@
   "2025-02-09": {
     "cal": 450,
     "wt": null,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-02-10": {
     "cal": null,
@@ -132,12 +139,14 @@
   "2025-02-15": {
     "cal": 500,
     "wt": null,
-    "note": "Fitness <3 "
+    "note": "Fitness <3 ",
+    "fit": true
   },
   "2025-02-16": {
     "cal": 500,
     "wt": null,
-    "note": "Fitness 500 <3"
+    "note": "Fitness 500 <3",
+    "fit": true
   },
   "2025-02-17": {
     "cal": null,
@@ -152,7 +161,8 @@
   "2025-02-19": {
     "cal": 400,
     "wt": null,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-02-20": {
     "cal": null,
@@ -162,17 +172,20 @@
   "2025-02-21": {
     "cal": 400,
     "wt": null,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-02-22": {
     "cal": 400,
     "wt": null,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-02-23": {
     "cal": 400,
     "wt": null,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-02-24": {
     "cal": null,
@@ -182,7 +195,8 @@
   "2025-02-25": {
     "cal": 400,
     "wt": null,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-02-27": {
     "cal": null,
@@ -192,7 +206,8 @@
   "2025-02-28": {
     "cal": 400,
     "wt": null,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-04-01": {
     "cal": null,
@@ -267,7 +282,8 @@
   "2025-04-17": {
     "cal": 400,
     "wt": null,
-    "note": "Thadashy 14:00 \nFitness"
+    "note": "Thadashy 14:00 \nFitness",
+    "fit": true
   },
   "2025-04-19": {
     "cal": null,
@@ -282,12 +298,14 @@
   "2025-04-21": {
     "cal": 650,
     "wt": 64.9,
-    "note": "Fitness/\nSauna/Swimming"
+    "note": "Fitness/\nSauna/Swimming",
+    "fit": true
   },
   "2025-04-22": {
     "cal": 400,
     "wt": 64.8,
-    "note": "10,000 Steps"
+    "note": "10,000 Steps",
+    "fit": true
   },
   "2025-04-23": {
     "cal": null,
@@ -307,7 +325,8 @@
   "2025-04-27": {
     "cal": null,
     "wt": 64.3,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-04-28": {
     "cal": null,
@@ -322,12 +341,14 @@
   "2025-04-30": {
     "cal": null,
     "wt": 64.2,
-    "note": "Fitness\nSeminar 11:15\nMensa"
+    "note": "Fitness\nSeminar 11:15\nMensa",
+    "fit": true
   },
   "2025-03-03": {
     "cal": 400,
     "wt": null,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-03-04": {
     "cal": null,
@@ -347,7 +368,8 @@
   "2025-03-07": {
     "cal": 400,
     "wt": null,
-    "note": "Clara Zetkin <3 \nFitness"
+    "note": "Clara Zetkin <3 \nFitness",
+    "fit": true
   },
   "2025-03-08": {
     "cal": null,
@@ -357,7 +379,8 @@
   "2025-03-09": {
     "cal": 400,
     "wt": null,
-    "note": "Thadashy 14:00 - 16:15\nFitness"
+    "note": "Thadashy 14:00 - 16:15\nFitness",
+    "fit": true
   },
   "2025-03-11": {
     "cal": null,
@@ -397,7 +420,8 @@
   "2025-05-04": {
     "cal": null,
     "wt": 64.2,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-05-05": {
     "cal": null,
@@ -422,7 +446,8 @@
   "2025-05-09": {
     "cal": null,
     "wt": 64.2,
-    "note": "Thadashy 14:20\nFitness"
+    "note": "Thadashy 14:20\nFitness",
+    "fit": true
   },
   "2025-05-10": {
     "cal": null,
@@ -447,12 +472,14 @@
   "2025-05-14": {
     "cal": 300,
     "wt": 63.5,
-    "note": "Seminar 11:15-12:45\nFitness"
+    "note": "Seminar 11:15-12:45\nFitness",
+    "fit": true
   },
   "2025-05-15": {
     "cal": 300,
     "wt": 63.6,
-    "note": "Thadashy 14:30-16:50\nFitness 5km "
+    "note": "Thadashy 14:30-16:50\nFitness 5km ",
+    "fit": true
   },
   "2025-05-16": {
     "cal": null,
@@ -482,12 +509,14 @@
   "2025-05-21": {
     "cal": 400,
     "wt": 63.5,
-    "note": "Fitness cardio\n4km + 30 Etagen"
+    "note": "Fitness cardio\n4km + 30 Etagen",
+    "fit": true
   },
   "2025-05-22": {
     "cal": 300,
     "wt": 63.3,
-    "note": "Fitness Cardio"
+    "note": "Fitness Cardio",
+    "fit": true
   },
   "2025-05-23": {
     "cal": null,
@@ -502,7 +531,8 @@
   "2025-05-25": {
     "cal": null,
     "wt": 63.3,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-05-26": {
     "cal": null,
@@ -512,7 +542,8 @@
   "2025-05-27": {
     "cal": 400,
     "wt": 62.9,
-    "note": "Fitness Cardio"
+    "note": "Fitness Cardio",
+    "fit": true
   },
   "2025-05-28": {
     "cal": null,
@@ -542,7 +573,8 @@
   "2025-06-02": {
     "cal": 400,
     "wt": 62.5,
-    "note": "No sleep :(\nThadashy 15:00-16:30\nFitness Cardio"
+    "note": "No sleep :(\nThadashy 15:00-16:30\nFitness Cardio",
+    "fit": true
   },
   "2025-06-03": {
     "cal": null,
@@ -582,7 +614,8 @@
   "2025-06-10": {
     "cal": null,
     "wt": 62.2,
-    "note": "Fitness\nTadashy 15-16:30"
+    "note": "Fitness\nTadashy 15-16:30",
+    "fit": true
   },
   "2025-06-11": {
     "cal": null,
@@ -592,7 +625,8 @@
   "2025-06-12": {
     "cal": null,
     "wt": 62,
-    "note": "Fitness\nTadashy 15-16:30"
+    "note": "Fitness\nTadashy 15-16:30",
+    "fit": true
   },
   "2025-06-13": {
     "cal": null,
@@ -617,7 +651,8 @@
   "2025-06-17": {
     "cal": null,
     "wt": 61.8,
-    "note": "Fitness\nTadashy 15-16:30"
+    "note": "Fitness\nTadashy 15-16:30",
+    "fit": true
   },
   "2025-06-18": {
     "cal": null,
@@ -632,7 +667,8 @@
   "2025-06-20": {
     "cal": null,
     "wt": 62.1,
-    "note": "Fitness\nTadashy 15-16:30"
+    "note": "Fitness\nTadashy 15-16:30",
+    "fit": true
   },
   "2025-06-21": {
     "cal": null,
@@ -677,7 +713,8 @@
   "2025-06-29": {
     "cal": null,
     "wt": 61.3,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-06-30": {
     "cal": null,
@@ -687,7 +724,8 @@
   "2025-07-01": {
     "cal": null,
     "wt": null,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-07-02": {
     "cal": null,
@@ -732,7 +770,8 @@
   "2025-07-10": {
     "cal": null,
     "wt": null,
-    "note": "Thadashy 14-15:30\nFitness\nVermittlung-Note!!!\nBewerbung 3.3"
+    "note": "Thadashy 14-15:30\nFitness\nVermittlung-Note!!!\nBewerbung 3.3",
+    "fit": true
   },
   "2025-07-11": {
     "cal": null,
@@ -747,7 +786,8 @@
   "2025-07-13": {
     "cal": null,
     "wt": null,
-    "note": "Kartons-Umzug\nSuvindu ab 18:00 Uhr\nFitness Cardio"
+    "note": "Kartons-Umzug\nSuvindu ab 18:00 Uhr\nFitness Cardio",
+    "fit": true
   },
   "2025-07-14": {
     "cal": null,
@@ -777,7 +817,8 @@
   "2025-09-10": {
     "cal": null,
     "wt": 62.3,
-    "note": "AOK\nFitness"
+    "note": "AOK\nFitness",
+    "fit": true
   },
   "2025-09-11": {
     "cal": null,
@@ -787,7 +828,8 @@
   "2025-09-12": {
     "cal": null,
     "wt": null,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-09-13": {
     "cal": null,
@@ -797,7 +839,8 @@
   "2025-09-14": {
     "cal": null,
     "wt": null,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-09-15": {
     "cal": null,
@@ -907,27 +950,32 @@
   "2025-10-06": {
     "cal": null,
     "wt": 61.6,
-    "note": "No sleep :(\nFitball"
+    "note": "No sleep :(\nFitball",
+    "fit": true
   },
   "2025-10-07": {
     "cal": null,
     "wt": null,
-    "note": "Fitball"
+    "note": "Fitball",
+    "fit": true
   },
   "2025-10-08": {
     "cal": null,
     "wt": null,
-    "note": "Fitball"
+    "note": "Fitball",
+    "fit": true
   },
   "2025-10-09": {
     "cal": null,
     "wt": null,
-    "note": "Fitness\nSparkasse"
+    "note": "Fitness\nSparkasse",
+    "fit": true
   },
   "2025-10-12": {
     "cal": null,
     "wt": null,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-10-13": {
     "cal": null,
@@ -942,7 +990,8 @@
   "2025-11-10": {
     "cal": null,
     "wt": null,
-    "note": "Fitness 50 min :)"
+    "note": "Fitness 50 min :)",
+    "fit": true
   },
   "2025-11-11": {
     "cal": null,
@@ -952,7 +1001,8 @@
   "2025-11-12": {
     "cal": null,
     "wt": null,
-    "note": "Fitness\nStretching <3\n30 min"
+    "note": "Fitness\nStretching <3\n30 min",
+    "fit": true
   },
   "2025-11-13": {
     "cal": null,
@@ -1017,17 +1067,20 @@
   "2025-11-17": {
     "cal": 500,
     "wt": null,
-    "note": "HIIT <3\n30 min"
+    "note": "HIIT <3\n30 min",
+    "fit": true
   },
   "2025-11-18": {
     "cal": null,
     "wt": 62.4,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-11-19": {
     "cal": 500,
     "wt": null,
-    "note": "HIIT <3\n30 min"
+    "note": "HIIT <3\n30 min",
+    "fit": true
   },
   "2025-11-20": {
     "cal": null,
@@ -1037,7 +1090,8 @@
   "2025-11-21": {
     "cal": null,
     "wt": null,
-    "note": "12:00 Berlitz Interview\nFitness"
+    "note": "12:00 Berlitz Interview\nFitness",
+    "fit": true
   },
   "2025-11-22": {
     "cal": null,
@@ -1057,12 +1111,14 @@
   "2025-11-25": {
     "cal": null,
     "wt": null,
-    "note": "PMS :(\nFitness"
+    "note": "PMS :(\nFitness",
+    "fit": true
   },
   "2025-11-26": {
     "cal": null,
     "wt": null,
-    "note": "Fitball 50 min"
+    "note": "Fitball 50 min",
+    "fit": true
   },
   "2025-11-30": {
     "cal": null,
@@ -1087,7 +1143,8 @@
   "2025-12-04": {
     "cal": null,
     "wt": null,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-12-05": {
     "cal": null,
@@ -1102,12 +1159,14 @@
   "2025-12-07": {
     "cal": null,
     "wt": null,
-    "note": "Fitness\nCardio\n"
+    "note": "Fitness\nCardio\n",
+    "fit": true
   },
   "2025-12-09": {
     "cal": null,
     "wt": null,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-12-11": {
     "cal": null,
@@ -1122,17 +1181,20 @@
   "2025-12-16": {
     "cal": null,
     "wt": null,
-    "note": "Fitball <3\n(45 min)"
+    "note": "Fitball <3\n(45 min)",
+    "fit": true
   },
   "2025-12-17": {
     "cal": null,
     "wt": null,
-    "note": "Fitness"
+    "note": "Fitness",
+    "fit": true
   },
   "2025-12-25": {
     "cal": null,
     "wt": null,
-    "note": "HIIT <3"
+    "note": "HIIT <3",
+    "fit": true
   },
   "2025-01-25": {
     "cal": null,

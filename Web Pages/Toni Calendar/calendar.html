@@ -12,11 +12,53 @@
       --muted: #93a4c7;
       --text: #e8eefc;
       --accent: #6ea8fe;
+      --train: #22ea75;
+      /* green */
       --border: rgba(255, 255, 255, .08);
     }
 
     * {
       box-sizing: border-box
+    }
+
+    /* 1) Never allow horizontal page overflow */
+    html,
+    body {
+      overflow-x: hidden;
+    }
+
+    /* 2) IMPORTANT: allow grid children to shrink (prevents overflow) */
+    .grid>section,
+    .grid>aside,
+    .card,
+    .cal,
+    .day,
+    .right {
+      min-width: 0;
+    }
+
+    /* 3) Make sure long text can't force width */
+    .kv,
+    .note,
+    .dow,
+    .monthTitle {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Notes: allow wrapping instead of pushing layout */
+    .note {
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    /* 4) Canvases sometimes overflow on resize */
+    canvas {
+      max-width: 100%;
+      display: block;
     }
 
     body {
@@ -147,6 +189,26 @@
       justify-content: space-between;
       gap: 8px
     }
+
+    .day.trained {
+      border-color: rgba(46, 204, 113, 0.75);
+      box-shadow: 0 0 0 1px rgba(46, 204, 113, 0.18) inset;
+    }
+
+    .badge.trained {
+      background: rgba(46, 204, 113, 0.15);
+      border: 1px solid rgba(46, 204, 113, 0.8);
+      color: var(--train);
+      padding: 2px 7px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .badge svg {
+      display: block;
+    }
+
 
     .badge {
       font-size: 11px;
@@ -325,8 +387,8 @@
               <div class="v" id="wtChange">—</div>
             </div>
             <div class="stat">
-              <div class="k">Days logged</div>
-              <div class="v" id="daysLogged">—</div>
+              <div class="k">Days trained</div>
+              <div class="v" id="daysTrained">—</div>
             </div>
             <div class="stat">
               <div class="k">Total calories</div>
@@ -361,6 +423,10 @@
                 <div class="k">Avg calories/day (year)</div>
                 <div class="v" id="yearAvgCalDay">—</div>
               </div>
+              <div class="stat">
+                <div class="k">Days trained (year)</div>
+                <div class="v" id="yearDaysTrained">—</div>
+              </div>
             </div>
 
             <div style="margin-top:14px">
@@ -390,6 +456,10 @@
       <button class="btn" id="close">✕</button>
     </div>
     <div class="modalBody">
+      <label style="display:flex;align-items:center;gap:10px">
+        <input type="checkbox" id="inFit" style="width:18px;height:18px" />
+        <span style="color:var(--text);font-size:13px">Fitness activity</span>
+      </label>
       <label>Calories (optional)
         <input id="inCal" inputmode="numeric" placeholder="e.g. 2100" />
       </label>
@@ -529,13 +599,19 @@
     function aggregateYearByMonth(year) {
       const items = dataForYear(year);
       const months = Array.from({ length: 12 }, (_, i) => i + 1);
+
       const calTotals = months.map(() => 0);
       const calDays = months.map(() => 0);
       const wtSum = months.map(() => 0);
       const wtDays = months.map(() => 0);
 
+      // NEW
+      const trainedDaysByMonth = months.map(() => 0);
+      const trainedKeys = new Set();
+
       for (const it of items) {
         const idx = it.mm - 1;
+
         if (it.cal != null) {
           calTotals[idx] += Number(it.cal) || 0;
           calDays[idx] += 1;
@@ -544,15 +620,25 @@
           wtSum[idx] += Number(it.wt) || 0;
           wtDays[idx] += 1;
         }
+
+        // NEW: count trained days
+        if (it.fit === true) {
+          trainedDaysByMonth[idx] += 1;
+          trainedKeys.add(it.key); // unique dates trained (safeguard)
+        }
       }
 
       const wtAvg = months.map((m, i) => wtDays[i] ? (wtSum[i] / wtDays[i]) : null);
       const calTotalYear = calTotals.reduce((a, b) => a + b, 0);
       const daysWithAnyEntry = new Set(items.map(x => x.key)).size;
-      const avgCalPerDay = (daysWithAnyEntry && calTotalYear) ? (calTotalYear / daysWithAnyEntry) : null;
+      const calDaysYear = items.filter(x => x.cal != null).length;
+      const avgCalPerDay = (calDaysYear && calTotalYear) ? (calTotalYear / calDaysYear) : null;
 
-      return { months, calTotals, wtAvg, calTotalYear, avgCalPerDay };
+      const trainedDaysYear = trainedKeys.size;
+
+      return { months, calTotals, wtAvg, calTotalYear, avgCalPerDay, trainedDaysByMonth, trainedDaysYear };
     }
+
 
     function updateYearlyCharts() {
       const sel = $("yearSel");
@@ -568,6 +654,7 @@
 
       $("yearTotalCal").textContent = agg.calTotalYear ? String(Math.round(agg.calTotalYear)) : "—";
       $("yearAvgCalDay").textContent = agg.avgCalPerDay != null ? String(Math.round(agg.avgCalPerDay)) : "—";
+      $("yearDaysTrained").textContent = agg.trainedDaysYear ? String(agg.trainedDaysYear) : "—";
 
       if (yearCalChart) yearCalChart.destroy();
       if (yearWtChart) yearWtChart.destroy();
@@ -633,9 +720,29 @@
 
         const badge = document.createElement("div");
         badge.className = "badge";
-        const logged = (item.cal != null) || (item.wt != null) || (item.note && item.note.trim());
-        badge.textContent = logged ? "✓" : "";
-        badge.style.visibility = logged ? "visible" : "hidden";
+
+        const trained = item.fit === true;
+        const logged = trained || (item.cal != null) || (item.wt != null) || (item.note && item.note.trim());
+
+        if (trained) {
+          // green border on the day
+          cell.classList.add("trained");
+
+          // green dumbbell icon badge
+          badge.classList.add("trained");
+          badge.innerHTML = `
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M6 9v6M4 10v4M8 10v4M18 9v6M16 10v4M20 10v4M8 12h8"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  `;
+          badge.style.visibility = "visible";
+        } else {
+          // keep your old behavior for non-trained logged days
+          badge.textContent = logged ? "✓" : "";
+          badge.style.visibility = logged ? "visible" : "hidden";
+        }
+
 
         top.appendChild(num);
         top.appendChild(badge);
@@ -645,6 +752,7 @@
         const parts = [];
         if (item.cal != null) parts.push(`Cal: ${item.cal}`);
         if (item.wt != null) parts.push(`Wt: ${item.wt}`);
+        if (item.fit === true) parts.unshift("Fit");
         kv.textContent = parts.join(" • ") || "—";
 
         const note = document.createElement("div");
@@ -672,6 +780,7 @@
       $("inCal").value = item.cal ?? "";
       $("inWt").value = item.wt ?? "";
       $("inNote").value = item.note ?? "";
+      $("inFit").checked = item.fit === true;
       $("dlg").showModal();
     }
 
@@ -688,12 +797,16 @@
       const cal = parseNum($("inCal").value);
       const wt = parseNum($("inWt").value);
       const note = $("inNote").value || "";
-      const hasAny = (cal != null) || (wt != null) || (note.trim().length > 0);
+      const fit = $("inFit").checked === true;
+
+      const hasAny = fit || (cal != null) || (wt != null) || (note.trim().length > 0);
+
       if (hasAny) {
-        all[activeKey] = { cal, wt, note };
+        all[activeKey] = { cal, wt, note, fit };
       } else {
         delete all[activeKey];
       }
+
       saveAll(all);
       closeEditor();
       buildCalendar();
@@ -730,8 +843,9 @@
       const calVals = items.filter(x => x.cal != null);
       const wtVals = items.filter(x => x.wt != null);
 
-      const daysLogged = items.length;
-      $("daysLogged").textContent = daysLogged ? String(daysLogged) : "—";
+      const daysTrained = items.filter(x => x.fit === true).length;
+      $("daysTrained").textContent = daysTrained ? String(daysTrained) : "—";
+
 
       const totalCal = calVals.reduce((s, x) => s + (x.cal || 0), 0);
       $("totalCal").textContent = calVals.length ? String(Math.round(totalCal)) : "—";
@@ -795,7 +909,9 @@
         try {
           const obj = JSON.parse(txt);
           if (obj && typeof obj === "object") {
-            saveAll(obj);
+            const current = loadAll();
+            const merged = mergeData(current, obj, false); // overwrite existing dates
+            saveAll(merged);
             buildCalendar();
           }
         } catch (e) { alert("Invalid JSON file."); }
