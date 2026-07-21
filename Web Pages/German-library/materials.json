@@ -15,6 +15,36 @@
     "tags": ["audio", "lektion 1"]
   },
   {
+    "title": "Schritte Plus Neu 5",
+    "level": "B1",
+    "type": "course sets",
+    "tags": ["schritte plus neu", "b1.1"],
+    "resources": [
+      {
+        "label": "Textbook",
+        "type": "textbooks",
+        "path": "files/B1/Schritte_Plus_Neu_5_B1.1.pdf",
+        "tags": ["kursbuch", "textbook"],
+        "sizeLabel": "69.8 MB"
+      }
+    ]
+  },
+  {
+    "title": "Schritte Plus Neu 6",
+    "level": "B1",
+    "type": "course sets",
+    "tags": ["schritte plus neu", "b1.2"],
+    "resources": [
+      {
+        "label": "Textbook",
+        "type": "textbooks",
+        "path": "files/B1/Schritte_Plus_Neu_6_B1.2.pdf",
+        "tags": ["kursbuch", "textbook"],
+        "sizeLabel": "89.1 MB"
+      }
+    ]
+  },
+  {
     "title": "B2 Speaking Cards (PDF)",
     "level": "B2",
     "type": "DIY materials",

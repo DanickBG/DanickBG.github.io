@@ -1,0 +1,4 @@
+# macOS Finder metadata (at any directory depth)
+.DS_Store
+._.DS_Store
+/.history

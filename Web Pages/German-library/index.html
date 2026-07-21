@@ -144,6 +144,11 @@
       border-color: rgba(255,255,255,0.18);
     }
     button.primary:hover { background: linear-gradient(90deg, rgba(125,211,252,0.42), rgba(167,139,250,0.38)); }
+    button.compact {
+      padding: 7px 9px;
+      border-radius: 10px;
+      font-size: 12px;
+    }
     button.danger {
       border-color: rgba(251,113,133,0.35);
       background: rgba(251,113,133,0.10);
@@ -211,6 +216,29 @@
       word-break: break-all;
     }
 
+    .resource-list {
+      border-top: 1px solid var(--border);
+      padding-top: 8px;
+    }
+
+    .resource-list summary {
+      color: var(--accent);
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .resource {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .resource:last-child { border-bottom: 0; }
+    .resource-name { font-size: 13px; }
+    .resource-info { color: var(--muted); font-size: 11px; margin-top: 3px; }
+
     .card-actions {
       display: flex;
       gap: 10px;
@@ -259,7 +287,7 @@
       <div class="pill">Local file library</div>
     </div>
     <p class="subtitle">
-      Filter by level/type, search instantly, download single files, or export a ZIP of the current results.
+      Browse grouped course sets and individual teaching materials, or search tags across the entire library.
     </p>
   </header>
 
@@ -293,6 +321,8 @@
             <option value="DIY materials">DIY materials</option>
             <option value="teaching instructions">teaching instructions</option>
             <option value="audios">audios</option>
+            <option value="videos">videos</option>
+            <option value="course sets">course sets</option>
           </select>
         </div>
       </div>
@@ -367,14 +397,31 @@
 
     function matchesSearch(item, q) {
       if (!q) return true;
-      const hay = [
+      const values = [
         item.title || '',
         item.level || '',
         item.type || '',
         filenameFromPath(item.path),
         ...(Array.isArray(item.tags) ? item.tags : [])
-      ].join(' ').toLowerCase();
+      ];
+
+      for (const resource of item.resources || []) {
+        values.push(
+          resource.label || '',
+          resource.type || '',
+          filenameFromPath(resource.path),
+          ...(Array.isArray(resource.tags) ? resource.tags : [])
+        );
+      }
+
+      const hay = values.join(' ').toLowerCase();
       return hay.includes(q.toLowerCase());
+    }
+
+    function matchesType(item, type) {
+      if (type === 'ALL') return true;
+      if (normalizeType(item.type) === type) return true;
+      return (item.resources || []).some(resource => normalizeType(resource.type) === type);
     }
 
     function applyFilters() {
@@ -384,7 +431,7 @@
 
       filteredItems = allItems.filter(it => {
         const okLevel = (level === 'ALL') || (String(it.level).toUpperCase() === level);
-        const okType  = (type === 'ALL')  || (normalizeType(it.type) === type);
+        const okType  = matchesType(it, type);
         const okQuery = matchesSearch(it, q);
         return okLevel && okType && okQuery;
       });
@@ -450,37 +497,85 @@
         const h3 = document.createElement('h3');
         h3.textContent = item.title || filenameFromPath(item.path);
 
-        const p = document.createElement('div');
-        p.className = 'path';
-        p.textContent = item.path;
-
-        const actions = document.createElement('div');
-        actions.className = 'card-actions';
-
-        // Single-file download
-        const a = document.createElement('a');
-        a.className = 'filelink';
-        a.href = item.path;
-        a.download = filenameFromPath(item.path);
-        a.textContent = 'Download';
-        actions.appendChild(a);
-
-        // Optional: quick open
-        const open = document.createElement('a');
-        open.className = 'filelink';
-        open.href = item.path;
-        open.target = '_blank';
-        open.rel = 'noopener';
-        open.textContent = 'Open';
-        actions.appendChild(open);
-
         card.appendChild(meta);
         card.appendChild(h3);
-        card.appendChild(p);
-        card.appendChild(actions);
+
+        if (item.resources.length) {
+          const list = document.createElement('details');
+          list.className = 'resource-list';
+
+          const summary = document.createElement('summary');
+          summary.textContent = `View ${item.resources.length} material${item.resources.length === 1 ? '' : 's'}`;
+          list.appendChild(summary);
+
+          for (const resource of item.resources) {
+            const row = document.createElement('div');
+            row.className = 'resource';
+
+            const description = document.createElement('div');
+            const name = document.createElement('div');
+            name.className = 'resource-name';
+            name.textContent = resource.label || filenameFromPath(resource.path);
+            const info = document.createElement('div');
+            info.className = 'resource-info';
+            info.textContent = [resource.type, resource.sizeLabel].filter(Boolean).join(' • ');
+            description.appendChild(name);
+            description.appendChild(info);
+
+            const actions = document.createElement('div');
+            actions.className = 'card-actions';
+            actions.appendChild(makeFileLink(resource.path, 'Download', true));
+            actions.appendChild(makeFileLink(resource.path, 'Open'));
+
+            row.appendChild(description);
+            row.appendChild(actions);
+            list.appendChild(row);
+          }
+
+          card.appendChild(list);
+
+          const setActions = document.createElement('div');
+          setActions.className = 'card-actions';
+          const downloadSet = document.createElement('button');
+          downloadSet.className = 'primary compact';
+          downloadSet.type = 'button';
+          downloadSet.textContent = '⬇ Download whole set (ZIP)';
+          downloadSet.addEventListener('click', () => {
+            if (!window.confirm('Are you sure you want to download the whole set?')) return;
+            downloadZipOf([item], item.title, downloadSet);
+          });
+          setActions.appendChild(downloadSet);
+          card.appendChild(setActions);
+        } else {
+          const p = document.createElement('div');
+          p.className = 'path';
+          p.textContent = item.path;
+
+          const actions = document.createElement('div');
+          actions.className = 'card-actions';
+          actions.appendChild(makeFileLink(item.path, 'Download', true));
+          actions.appendChild(makeFileLink(item.path, 'Open'));
+
+          card.appendChild(p);
+          card.appendChild(actions);
+        }
 
         els.grid.appendChild(card);
       }
+    }
+
+    function makeFileLink(path, label, download = false) {
+      const link = document.createElement('a');
+      link.className = 'filelink';
+      link.href = path;
+      link.textContent = label;
+      if (download) {
+        link.download = filenameFromPath(path);
+      } else {
+        link.target = '_blank';
+        link.rel = 'noopener';
+      }
+      return link;
     }
 
     async function loadMaterials() {
@@ -501,14 +596,25 @@
         }
 
         // Basic normalization
-        allItems = data.map((x) => ({
-          title: x.title ?? '',
-          level: String(x.level ?? '').toUpperCase(),
-          type: normalizeType(x.type ?? ''),
-          path: String(x.path ?? ''),
-          tags: Array.isArray(x.tags) ? x.tags.map(String) : [],
-          sizeLabel: x.sizeLabel ?? ''
-        })).filter(x => x.level && x.type && x.path);
+        allItems = data.map((x) => {
+          const resources = Array.isArray(x.resources) ? x.resources.map(resource => ({
+            label: String(resource.label ?? ''),
+            type: normalizeType(resource.type ?? ''),
+            path: String(resource.path ?? ''),
+            tags: Array.isArray(resource.tags) ? resource.tags.map(String) : [],
+            sizeLabel: String(resource.sizeLabel ?? '')
+          })).filter(resource => resource.path) : [];
+
+          return {
+            title: x.title ?? '',
+            level: String(x.level ?? '').toUpperCase(),
+            type: normalizeType(x.type ?? (resources.length ? 'course sets' : '')),
+            path: String(x.path ?? ''),
+            tags: Array.isArray(x.tags) ? x.tags.map(String) : [],
+            sizeLabel: x.sizeLabel ?? '',
+            resources
+          };
+        }).filter(x => x.level && x.type && (x.path || x.resources.length));
 
         applyFilters();
       } catch (err) {
@@ -527,10 +633,26 @@
       }
     }
 
-    async function downloadZipOf(items) {
+    function safeFilename(value) {
+      return String(value || 'german-materials')
+        .trim()
+        .replace(/[^a-z0-9._-]+/gi, '-')
+        .replace(/^-+|-+$/g, '') || 'german-materials';
+    }
+
+    async function downloadZipOf(items, archiveName = 'german-materials', triggerButton = els.downloadZipBtn) {
       if (!items.length) return;
 
-      els.downloadZipBtn.disabled = true;
+      const files = items.flatMap(item => item.resources.length
+        ? item.resources.map(resource => ({
+            ...resource,
+            level: item.level,
+            setTitle: item.title
+          }))
+        : [item]
+      );
+
+      triggerButton.disabled = true;
       els.zipProgress.textContent = 'Preparing ZIP…';
 
       try {
@@ -539,12 +661,13 @@
         let ok = 0;
         let fail = 0;
 
-        for (let i = 0; i < items.length; i++) {
-          const it = items[i];
+        for (let i = 0; i < files.length; i++) {
+          const it = files[i];
           const safeType = normalizeType(it.type).replace(/[\\:*?"<>|]/g, '_');
-          const folder = `${String(it.level).toUpperCase()}/${safeType}`;
+          const safeSet = it.setTitle ? safeFilename(it.setTitle) : '';
+          const folder = [String(it.level).toUpperCase(), safeSet, safeType].filter(Boolean).join('/');
 
-          els.zipProgress.textContent = `Fetching ${i + 1}/${items.length}…`;
+          els.zipProgress.textContent = `Fetching ${i + 1}/${files.length}…`;
 
           try {
             const r = await fetch(it.path);
@@ -567,13 +690,14 @@
 
         const now = new Date();
         const stamp = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
-        saveAs(out, `german-materials_${stamp}.zip`);
+        saveAs(out, `${safeFilename(archiveName)}_${stamp}.zip`);
 
         els.zipProgress.textContent = `Done. (${ok} included, ${fail} failed)`;
       } catch (err) {
         showError(`ZIP download failed.\n\n${err?.message || err}`);
         els.zipProgress.textContent = '';
       } finally {
+        triggerButton.disabled = false;
         els.downloadZipBtn.disabled = filteredItems.length === 0;
       }
     }
