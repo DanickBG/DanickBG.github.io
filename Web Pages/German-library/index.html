@@ -402,6 +402,7 @@
         item.level || '',
         item.type || '',
         filenameFromPath(item.path),
+        filenameFromPath(item.archivePath),
         ...(Array.isArray(item.tags) ? item.tags : [])
       ];
 
@@ -500,7 +501,8 @@
         card.appendChild(meta);
         card.appendChild(h3);
 
-        if (item.resources.length) {
+        if (item.resources.length || item.archivePath) {
+          if (item.resources.length) {
           const list = document.createElement('details');
           list.className = 'resource-list';
 
@@ -533,19 +535,27 @@
           }
 
           card.appendChild(list);
+          }
 
-          const setActions = document.createElement('div');
-          setActions.className = 'card-actions';
-          const downloadSet = document.createElement('button');
-          downloadSet.className = 'primary compact';
-          downloadSet.type = 'button';
-          downloadSet.textContent = '⬇ Download whole set (ZIP)';
-          downloadSet.addEventListener('click', () => {
-            if (!window.confirm('Are you sure you want to download the whole set?')) return;
-            downloadZipOf([item], item.title, downloadSet);
-          });
-          setActions.appendChild(downloadSet);
-          card.appendChild(setActions);
+          if (item.archivePath) {
+            const setActions = document.createElement('div');
+            setActions.className = 'card-actions';
+            const downloadSet = document.createElement('button');
+            downloadSet.className = 'primary compact';
+            downloadSet.type = 'button';
+            const archiveType = filenameFromPath(item.archivePath).split('.').pop().toUpperCase();
+            downloadSet.textContent = `⬇ Download whole set (${archiveType})`;
+            downloadSet.addEventListener('click', () => {
+              if (!window.confirm('Are you sure you want to download the whole set?')) return;
+              const link = makeFileLink(item.archivePath, '', true);
+              link.style.display = 'none';
+              document.body.appendChild(link);
+              link.click();
+              link.remove();
+            });
+            setActions.appendChild(downloadSet);
+            card.appendChild(setActions);
+          }
         } else {
           const p = document.createElement('div');
           p.className = 'path';
@@ -610,11 +620,12 @@
             level: String(x.level ?? '').toUpperCase(),
             type: normalizeType(x.type ?? (resources.length ? 'course sets' : '')),
             path: String(x.path ?? ''),
+            archivePath: String(x.archivePath ?? ''),
             tags: Array.isArray(x.tags) ? x.tags.map(String) : [],
             sizeLabel: x.sizeLabel ?? '',
             resources
           };
-        }).filter(x => x.level && x.type && (x.path || x.resources.length));
+        }).filter(x => x.level && x.type && (x.path || x.archivePath || x.resources.length));
 
         applyFilters();
       } catch (err) {
@@ -643,14 +654,20 @@
     async function downloadZipOf(items, archiveName = 'german-materials', triggerButton = els.downloadZipBtn) {
       if (!items.length) return;
 
-      const files = items.flatMap(item => item.resources.length
-        ? item.resources.map(resource => ({
+      const files = items.flatMap(item => {
+        if (item.resources.length) return item.resources.map(resource => ({
             ...resource,
             level: item.level,
             setTitle: item.title
-          }))
-        : [item]
-      );
+          }));
+        if (item.path) return [item];
+        if (item.archivePath) return [{
+          ...item,
+          path: item.archivePath,
+          setTitle: item.title
+        }];
+        return [];
+      });
 
       triggerButton.disabled = true;
       els.zipProgress.textContent = 'Preparing ZIP…';

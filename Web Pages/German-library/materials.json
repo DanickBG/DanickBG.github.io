@@ -1,23 +1,68 @@
 [
   {
-    "title": "Netzwerk A1 Kursbuch (PDF)",
+    "title": "Schritte Plus Neu 1",
     "level": "A1",
     "type": "textbooks",
-    "path": "files/A1/textbooks/Netzwerk_A1_Kursbuch.pdf",
-    "tags": ["netzwerk", "kursbuch", "grammar"],
-    "sizeLabel": "120 MB"
+    "tags": ["schritte plus neu", "a1.1"],
+    "resources": [
+      {
+        "label": "Textbook",
+        "type": "textbooks",
+        "path": "files/A1/Schritte_Plus_Neu_1_A1.1.pdf",
+        "tags": ["kursbuch", "textbook"],
+        "sizeLabel": "31.4 MB"
+      }
+    ]
   },
   {
-    "title": "Netzwerk A1 Audio Lektion 1 (MP3)",
+    "title": "Schritte Plus Neu 2",
     "level": "A1",
-    "type": "audios",
-    "path": "files/A1/audios/Netzwerk_A1_L1.mp3",
-    "tags": ["audio", "lektion 1"]
+    "type": "textbooks",
+    "tags": ["schritte plus neu", "a1.2"],
+    "resources": [
+      {
+        "label": "Textbook",
+        "type": "textbooks",
+        "path": "files/A1/Schritte_Plus_Neu_2_A1.2.pdf",
+        "tags": ["kursbuch", "textbook"],
+        "sizeLabel": "90.4 MB"
+      }
+    ]
+  },
+  {
+    "title": "Schritte Plus Neu 3",
+    "level": "A2",
+    "type": "textbooks",
+    "tags": ["schritte plus neu", "a2.1"],
+    "resources": [
+      {
+        "label": "Textbook",
+        "type": "textbooks",
+        "path": "files/A2/Schritte_Plus_Neu_3_A2.§.pdf",
+        "tags": ["kursbuch", "textbook"],
+        "sizeLabel": "89.0 MB"
+      }
+    ]
+  },
+  {
+    "title": "Schritte Plus Neu 4",
+    "level": "A2",
+    "type": "textbooks",
+    "tags": ["schritte plus neu", "a2.2"],
+    "resources": [
+      {
+        "label": "Textbook",
+        "type": "textbooks",
+        "path": "files/A2/Schritte_Plus_Neu_4_A2.2.pdf",
+        "tags": ["kursbuch", "textbook"],
+        "sizeLabel": "92.9 MB"
+      }
+    ]
   },
   {
     "title": "Schritte Plus Neu 5",
     "level": "B1",
-    "type": "course sets",
+    "type": "textbooks",
     "tags": ["schritte plus neu", "b1.1"],
     "resources": [
       {
@@ -32,7 +77,7 @@
   {
     "title": "Schritte Plus Neu 6",
     "level": "B1",
-    "type": "course sets",
+    "type": "textbooks",
     "tags": ["schritte plus neu", "b1.2"],
     "resources": [
       {
@@ -43,12 +88,5 @@
         "sizeLabel": "89.1 MB"
       }
     ]
-  },
-  {
-    "title": "B2 Speaking Cards (PDF)",
-    "level": "B2",
-    "type": "DIY materials",
-    "path": "files/B2/DIY materials/B2_Speaking_Cards.pdf",
-    "tags": ["speaking", "cards"]
   }
 ]
