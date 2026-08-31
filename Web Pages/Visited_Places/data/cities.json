@@ -32,5 +32,7 @@
   { "id": "Kavala", "name": "Kavala", "coords": [40.9395, 24.4068], "infoFile": "data/info/Kavala.txt", "visited": "X" },
   { "id": "Magdeburg", "name": "Magdeburg", "coords": [52.1205, 11.6276], "infoFile": "data/info/Magdeburg.txt", "visited": "X"},
   { "id": "Bastei bridge", "name": "Bastei bridge", "coords": [50.9625, 14.2231], "infoFile": "data/info/Bastei bridge.txt", "visited": "X"},
-  { "id": "Halle", "name": "Halle", "coords": [51.4769, 11.9722], "infoFile": "data/info/Halle.txt", "visited": "X"}
+  { "id": "Halle", "name": "Halle", "coords": [51.4769, 11.9722], "infoFile": "data/info/Halle.txt", "visited": "X"},
+  {"id":"Strasbourg","name":"Strasbourg","coords":[48.5734,7.7521],"infoFile":"data/info/Strasbourg.txt","visited":"02.04.2026"},
+  {"id":"Krakow","name":"Krakow","coords":[50.0647,19.945],"infoFile":"data/info/Krakow.txt","visited":"23.08.2026"}
 ]
