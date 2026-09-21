@@ -88,5 +88,21 @@
         "sizeLabel": "89.1 MB"
       }
     ]
+  },
+  {
+    "title": "Trennbare oder untrennbare Verben (PDF)",
+    "level": "A2",
+    "type": "DIY materials",
+    "path": "files/Homemade/Trennbare_oder_untrennbare_verben.pdf",
+    "tags": ["trennbare verben", "untrennbare verben", "verbs", "grammar", "übungen", "exercises"],
+    "sizeLabel": "394.5 KB"
+  },
+  {
+    "title": "Relativsätze – Übungen (PDF)",
+    "level": "B1",
+    "type": "DIY materials",
+    "path": "files/Homemade/Relativsaetze_Uebungen.pdf",
+    "tags": ["relativsätze", "relativsaetze", "relative clauses", "grammar", "übungen", "exercises"],
+    "sizeLabel": "94.0 KB"
   }
 ]
