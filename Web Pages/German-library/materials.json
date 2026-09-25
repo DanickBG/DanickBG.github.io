@@ -30,6 +30,22 @@
     ]
   },
   {
+    "title": "Spektrum Deutsch A1",
+    "level": "A1",
+    "type": "textbooks",
+    "tags": ["spektrum deutsch", "kursbuch", "arbeitsbuch", "textbook", "workbook"],
+    "resources": [
+      {
+        "label": "Kurs- und Arbeitsbuch",
+        "type": "textbooks",
+        "types": ["textbooks", "workbooks"],
+        "path": "files/A1/Spektrum Deutsch A1 Kurs- und Arbeitsbuch.pdf",
+        "tags": ["kursbuch", "arbeitsbuch", "textbook", "workbook"],
+        "sizeLabel": "96.4 MB"
+      }
+    ]
+  },
+  {
     "title": "Schritte Plus Neu 3",
     "level": "A2",
     "type": "textbooks",
@@ -90,19 +106,27 @@
     ]
   },
   {
-    "title": "Trennbare oder untrennbare Verben (PDF)",
-    "level": "A2",
+    "title": "Homemade materials",
+    "level": "A2–B1",
     "type": "DIY materials",
-    "path": "files/Homemade/Trennbare_oder_untrennbare_verben.pdf",
-    "tags": ["trennbare verben", "untrennbare verben", "verbs", "grammar", "übungen", "exercises"],
-    "sizeLabel": "394.5 KB"
-  },
-  {
-    "title": "Relativsätze – Übungen (PDF)",
-    "level": "B1",
-    "type": "DIY materials",
-    "path": "files/Homemade/Relativsaetze_Uebungen.pdf",
-    "tags": ["relativsätze", "relativsaetze", "relative clauses", "grammar", "übungen", "exercises"],
-    "sizeLabel": "94.0 KB"
+    "tags": ["homemade", "grammar", "übungen", "exercises"],
+    "resources": [
+      {
+        "label": "Trennbare oder untrennbare Verben",
+        "level": "A2",
+        "type": "DIY materials",
+        "path": "files/Homemade/Trennbare_oder_untrennbare_verben.pdf",
+        "tags": ["trennbare verben", "untrennbare verben", "verbs", "grammar", "übungen", "exercises"],
+        "sizeLabel": "394.5 KB"
+      },
+      {
+        "label": "Relativsätze – Übungen",
+        "level": "B1",
+        "type": "DIY materials",
+        "path": "files/Homemade/Relativsaetze_Uebungen.pdf",
+        "tags": ["relativsätze", "relativsaetze", "relative clauses", "grammar", "übungen", "exercises"],
+        "sizeLabel": "94.0 KB"
+      }
+    ]
   }
 ]

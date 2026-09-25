@@ -409,7 +409,9 @@
       for (const resource of item.resources || []) {
         values.push(
           resource.label || '',
+          resource.level || '',
           resource.type || '',
+          ...(Array.isArray(resource.types) ? resource.types : []),
           filenameFromPath(resource.path),
           ...(Array.isArray(resource.tags) ? resource.tags : [])
         );
@@ -422,7 +424,14 @@
     function matchesType(item, type) {
       if (type === 'ALL') return true;
       if (normalizeType(item.type) === type) return true;
-      return (item.resources || []).some(resource => normalizeType(resource.type) === type);
+      return (item.resources || []).some(resource =>
+        normalizeType(resource.type) === type || (resource.types || []).includes(type)
+      );
+    }
+
+    function matchesLevel(item, level) {
+      if (level === 'ALL') return true;
+      return item.level === level || item.resources.some(resource => resource.level === level);
     }
 
     function applyFilters() {
@@ -431,7 +440,7 @@
       const type = els.type.value;
 
       filteredItems = allItems.filter(it => {
-        const okLevel = (level === 'ALL') || (String(it.level).toUpperCase() === level);
+        const okLevel = matchesLevel(it, level);
         const okType  = matchesType(it, type);
         const okQuery = matchesSearch(it, q);
         return okLevel && okType && okQuery;
@@ -439,8 +448,8 @@
 
       // Sort by level order, then type, then title
       filteredItems.sort((a,b) => {
-        const la = LEVEL_ORDER.indexOf(String(a.level).toUpperCase());
-        const lb = LEVEL_ORDER.indexOf(String(b.level).toUpperCase());
+        const la = LEVEL_ORDER.findIndex(level => matchesLevel(a, level));
+        const lb = LEVEL_ORDER.findIndex(level => matchesLevel(b, level));
         if (la !== lb) return la - lb;
         const ta = normalizeType(a.type);
         const tb = normalizeType(b.type);
@@ -520,7 +529,7 @@
             name.textContent = resource.label || filenameFromPath(resource.path);
             const info = document.createElement('div');
             info.className = 'resource-info';
-            info.textContent = [resource.type, resource.sizeLabel].filter(Boolean).join(' • ');
+            info.textContent = [resource.level, (resource.types.length ? resource.types.join(' / ') : resource.type), resource.sizeLabel].filter(Boolean).join(' • ');
             description.appendChild(name);
             description.appendChild(info);
 
@@ -609,7 +618,9 @@
         allItems = data.map((x) => {
           const resources = Array.isArray(x.resources) ? x.resources.map(resource => ({
             label: String(resource.label ?? ''),
+            level: String(resource.level ?? '').toUpperCase(),
             type: normalizeType(resource.type ?? ''),
+            types: Array.isArray(resource.types) ? resource.types.map(normalizeType) : [],
             path: String(resource.path ?? ''),
             tags: Array.isArray(resource.tags) ? resource.tags.map(String) : [],
             sizeLabel: String(resource.sizeLabel ?? '')
@@ -657,7 +668,7 @@
       const files = items.flatMap(item => {
         if (item.resources.length) return item.resources.map(resource => ({
             ...resource,
-            level: item.level,
+            level: resource.level || item.level,
             setTitle: item.title
           }));
         if (item.path) return [item];
